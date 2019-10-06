@@ -1,8 +1,13 @@
 var timeEl = document.querySelector(".Time");
 var questionsEl = document.querySelector(".questions-rendered");
+var scoreEl = document.querySelector(".Score");
+var highScoreEl = document.querySelector(".highScore");
+var submitButton = document.querySelector("#submit");
 
 var secondsLeft = 76;
 var timerInterval;
+
+document.querySelector('.Score').style.display='none';
 
 function setTime(){
     timerInterval = setInterval(function(){
@@ -16,66 +21,64 @@ function setTime(){
 
 const startBtn = document.getElementById("startquiz");
 startBtn.addEventListener('click', function() {
-  setTime();
-
-  startBtn.style.display = 'none';
-
+    setTime();
+    startBtn.style.display = 'none';
+    document.querySelector('.splashPage').style.display='none';
     displayQuestions(questionIndex);
 })
 
 var questionIndex = 0;
 
- function displayQuestions(){
+function displayQuestions(){
     questionsEl.textContent = "";
-
-    var question = questions[questionIndex]; 
-   var questionDiv = document.createElement("div");
-
-
-
-    var questionText = document.createElement("p");
-
-    questionText.textContent = question.title; 
-
+    var question = questions[questionIndex];
+    var questionDiv = document.createElement("div");
+    var questionText = document.createElement("h2");
+    questionText.textContent = question.title;
     questionDiv.appendChild(questionText)
-
-
+    
     for (var i=0; i < question.choices.length ;i++) {
-
         var option = document.createElement("button");
-
         option.textContent = question.choices[i];
-
         option.setAttribute("class", "option");
-
         option.addEventListener("click", function(e) {
-            alert("clicked on an option");
-               var optionClicked = (e.target.innerHTML);
-               if(optionClicked === questions[questionIndex]
-                .answer){
-                    alert("correct");
-                    displayQuestions(questionIndex++);
-                }
-                else{
-                    alert("incorrect!!");
-                    displayQuestions(questionIndex++);
-                }
+            var optionClicked = (e.target.innerHTML);
+            if(optionClicked === questions[questionIndex].answer){
+                alert("Correct!");
+                displayQuestions(questionIndex++);
+            }
+            else{
+                alert("Incorrect!");
+                displayQuestions(questionIndex++);
+                secondsLeft -= 10;
+            }
+            if (questionIndex === questions.length - 1) {
+                document.querySelector('.Score').style.display='block';
+                document.querySelector('.Time').style.display='none';
+                highScoreEl.textContent = "YOUR SCORE IS " + secondsLeft;
+              } 
         })
         questionDiv.appendChild(option);
     }
     questionsEl.appendChild(questionDiv);
 }
 
-// (repeat until .....)
-// either time === 0 OR if reached last index
-// What has to be true for us to know we've reached the end of our array of questions?
-// questions.length (5) and then last index is 4
-// currentIndex++  (5)
-// ... if (currentIndex  ===  questions.length) { endGame() };
-// At end of game...
-// display score view ('All Done!', score, and input field)
+// function renderLastRegistered() {
+//     var initials = localStorage.getItem("initials");
+//     if (initials === null) {
+//       return;
+//     }
 
-// if submit button is pressed, save initials/score to local storage
-// take user to view highscores and get items from local storage
+// submitButton.addEventListener("click", function(event){
+//     event.preventDefault();
 
-// If restart game -- all values will need to be reset to their original values
+//     var enterInitials = document.querySelector("#initials").value;
+    
+//     if (enterInitials === "") {
+//     alert("Error", "initials cannot be blank!");
+//     }
+//     else {
+//         localStorage.setItem("initials", initials);
+//         renderLastRegistered();
+//       }
+// }
