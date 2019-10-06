@@ -1,4 +1,3 @@
-//quiz questions in an array of objects
 var questions = [
     {
         title: "Commonly used data types DO NOT include:",
