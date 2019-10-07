@@ -7,7 +7,10 @@ var scoreEl = document.querySelector(".Score");
 var highScoreEl = document.querySelector(".highScore");
 var submitButton = document.querySelector("#submit");
 
+var userInitials = "";
+
 document.querySelector('.Score').style.display='none';
+document.querySelector('.highscorePage').style.display='none';
 
 function setTime(){
     timerInterval = setInterval(function(){
@@ -67,6 +70,18 @@ function displayQuestions(){
     }
     questionsEl.appendChild(questionDiv);
 }
+
+const submitBtn = document.getElementById("submit");
+submitBtn.addEventListener('click', function() {
+    document.querySelector('.Score').style.display='none';
+    document.querySelector('.highscorePage').style.display='block';
+})
+
+
+localStorage.setItem("initials", userInitials);
+initials = localStorage.getItem("initials");
+
+
 // function renderLastRegistered() {
 //     var initials = localStorage.getItem("initials");
 //     if (initials === null) {
