@@ -1,11 +1,11 @@
+var secondsLeft = 76;
+var timerInterval;
+
 var timeEl = document.querySelector(".Time");
 var questionsEl = document.querySelector(".questions-rendered");
 var scoreEl = document.querySelector(".Score");
 var highScoreEl = document.querySelector(".highScore");
 var submitButton = document.querySelector("#submit");
-
-var secondsLeft = 76;
-var timerInterval;
 
 document.querySelector('.Score').style.display='none';
 
@@ -14,11 +14,15 @@ function setTime(){
         secondsLeft--;
         timeEl.textContent = "TIME REMAINING: " + secondsLeft;
         if(secondsLeft === 0){
-            clearInterval(timerInterval);
-        }
-    }, 1000);
-}
-
+                clearInterval(timerInterval);
+                document.querySelector('.Score').style.display='block';
+                document.querySelector(".Time").style.display='none';
+                document.querySelector('.questions-rendered').style.display='none';
+                highScoreEl.textContent = "YOUR SCORE IS " + secondsLeft;
+            }
+        }, 1000);
+    }
+    
 const startBtn = document.getElementById("startquiz");
 startBtn.addEventListener('click', function() {
     setTime();
@@ -43,6 +47,12 @@ function displayQuestions(){
         option.setAttribute("class", "option");
         option.addEventListener("click", function(e) {
             var optionClicked = (e.target.innerHTML);
+            if (questionIndex == questions.length - 1) {
+                clearInterval(timerInterval);
+                document.querySelector('.Score').style.display='block';
+                document.querySelector(".Time").style.display='none';
+                highScoreEl.textContent = "YOUR SCORE IS " + secondsLeft;
+              } 
             if(optionClicked === questions[questionIndex].answer){
                 alert("Correct!");
                 displayQuestions(questionIndex++);
@@ -52,17 +62,11 @@ function displayQuestions(){
                 displayQuestions(questionIndex++);
                 secondsLeft -= 10;
             }
-            if (questionIndex === questions.length - 1) {
-                document.querySelector('.Score').style.display='block';
-                document.querySelector('.Time').style.display='none';
-                highScoreEl.textContent = "YOUR SCORE IS " + secondsLeft;
-              } 
         })
         questionDiv.appendChild(option);
     }
     questionsEl.appendChild(questionDiv);
 }
-
 // function renderLastRegistered() {
 //     var initials = localStorage.getItem("initials");
 //     if (initials === null) {
