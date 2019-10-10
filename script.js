@@ -6,6 +6,7 @@ var questionsEl = document.querySelector(".questions-rendered");
 var scoreEl = document.querySelector(".Score");
 var highScoreEl = document.querySelector(".highScore");
 var submitButton = document.querySelector("#submit");
+var refreshButton = document.querySelector("#goBack");
 
 var initialInput = document.querySelector("#initials");
 var scoreList = document.querySelector("#scoreList");
@@ -15,6 +16,10 @@ var userInitials = [];
 
 document.querySelector('.Score').style.display='none';
 document.querySelector('.highscorePage').style.display='none';
+
+refreshButton.addEventListener("click", function(){
+    location.reload()
+});
 
 function setTime(){
     timerInterval = setInterval(function(){
