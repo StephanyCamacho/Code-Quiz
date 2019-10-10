@@ -12,7 +12,6 @@ var scoreList = document.querySelector("#scoreList");
 var scoreForm = document.querySelector("#score-form");
 
 var userInitials = [];
-init();
 
 document.querySelector('.Score').style.display='none';
 document.querySelector('.highscorePage').style.display='none';
@@ -22,15 +21,15 @@ function setTime(){
         secondsLeft--;
         timeEl.textContent = "TIME REMAINING: " + secondsLeft;
         if(secondsLeft === 0){
-                clearInterval(timerInterval);
-                document.querySelector('.Score').style.display='block';
-                document.querySelector(".Time").style.display='none';
-                document.querySelector('.questions-rendered').style.display='none';
-                highScoreEl.textContent = "YOUR SCORE IS " + secondsLeft;
-            }
-        }, 1000);
+            clearInterval(timerInterval);
+            document.querySelector('.Score').style.display='block';
+            document.querySelector(".Time").style.display='none';
+            document.querySelector('.questions-rendered').style.display='none';
+            highScoreEl.textContent = "YOUR SCORE IS " + secondsLeft;
+        }
+    }, 1000);
 }
-    
+
 const startBtn = document.getElementById("startquiz");
 
 startBtn.addEventListener('click', function() {
@@ -43,14 +42,6 @@ startBtn.addEventListener('click', function() {
 var questionIndex = 0;
 
 function displayQuestions(){
-    
-    if (questionIndex == questions.length - 1) {
-        clearInterval(timerInterval);
-        document.querySelector('.Score').style.display='block';
-        document.querySelector(".Time").style.display='none';
-        highScoreEl.textContent = "YOUR SCORE IS " + secondsLeft;
-        return;
-    }
     
     questionsEl.textContent = "";
     var question = questions[questionIndex];
@@ -65,17 +56,25 @@ function displayQuestions(){
         option.setAttribute("class", "option");
         option.addEventListener("click", function(e) {
             var optionClicked = (e.target.innerHTML);
-                  if(optionClicked === questions[questionIndex].answer){
-                      alert("Correct!");
-                      displayQuestions(questionIndex++);
-                  }
-                  else{
-                      alert("Incorrect!");
-                      displayQuestions(questionIndex++);
-                      secondsLeft -= 10;
-                  }
-              
+            
+            if(optionClicked === questions[questionIndex].answer){
+                alert("Correct!");
+                displayQuestions(questionIndex++);
+            }
+            else{
+                alert("Incorrect!");
+                displayQuestions(questionIndex++);
+                secondsLeft -= 10;
+            }
+            
         });
+        if (questionIndex == questions.length - 1) {
+            clearInterval(timerInterval);
+            document.querySelector('.Score').style.display='block';
+            document.querySelector(".Time").style.display='none';
+            highScoreEl.textContent = "YOUR SCORE IS " + secondsLeft;
+            return;
+        }
         questionDiv.appendChild(option);
     }
     questionsEl.appendChild(questionDiv);
@@ -110,22 +109,22 @@ function init() {
     
     submitBtn.addEventListener('click', function() {
         event.preventDefault();
-    
+        
         var initialText = initialInput.value.trim();
-    
+        
         if (initialText === ""){
             return;
         }
         userInitials.push(initialText);
         console.log(userInitials);
         initialInput.value = "";
-
+        
         document.querySelector('.Score').style.display='none';
         document.querySelector('.highscorePage').style.display='block';
         
         storeScore();
         renderScores();
-
+        
     });
 }
 
@@ -135,12 +134,13 @@ function storeScore(){
 
 scoreList.addEventListener("click", function(event){
     var element = event.target;
-
+    
     if (element.matches("button")=== true){
         var index = element.parentElement.getAttribute("data-index");
         userInitials.splice(index, 1);
-
+        
         storeScore();
         renderScores();
     }
 });
+init();
