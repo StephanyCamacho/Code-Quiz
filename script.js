@@ -120,7 +120,7 @@ function init() {
         if (initialText === ""){
             return;
         }
-        userInitials.push(initialText);
+        userInitials.push(initialText + " " + secondsLeft);
         console.log(userInitials);
         initialInput.value = "";
         
